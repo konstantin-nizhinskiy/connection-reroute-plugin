@@ -17,13 +17,38 @@ function install(editor, { curve = d3.curveCatmullRom.alpha(1), curvature = 0.05
             .curve(curve)
             (transformedPoints)
     });
+    var  last_active=false
     editor.on('renderconnection', ({ el, connection }) => {
         const path = el.querySelector('.connection path');
         const pins = connection.data.pins || (connection.data.pins = []);
-
+        el.classList.add('bpm-connect-rete')
         if (!path) throw new Error('<path> not found');
 
-        path.addEventListener('click', () => {
+
+        if(connection.data.color){
+            path.style.setProperty("stroke", connection.data.color)
+        }
+
+        path.addEventListener('click', function () {
+            if(last_active){
+                last_active.classList.remove("select-connection")
+            }
+            el.classList.add("select-connection")
+            last_active=el
+        })
+        connection.addPink=()=>{
+            const { mouse } = editor.view.area;
+            const pin = { ...mouse };
+            const [x1, y1, x2, y2] = editor.view.connections.get(connection).getPoints();
+            const points = [{ x: x1, y: y1 }, ...pins, { x: x2, y: y2 }];
+            const index = findRightIndex(pin, points);
+
+            pins.splice(index, 0, pin)
+
+            app.$children[0].$forceUpdate();
+            editor.view.connections.get(connection).update();
+        }
+        path.addEventListener('dblclick', () => {
             const { mouse } = editor.view.area;
             const pin = { ...mouse };
             const [x1, y1, x2, y2] = editor.view.connections.get(connection).getPoints();
