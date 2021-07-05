@@ -763,7 +763,7 @@ var __vue_render__ = function() {
   return _c("div", {
     staticClass: "pin",
     style: { left: _vm.pin.x + "px", top: _vm.pin.y + "px" },
-    on: { pointerdown: _vm.down, pointerup: _vm.pinup }
+    on: { pointerdown: _vm.down, dblclick: _vm.pinup }
   })
 };
 var __vue_staticRenderFns__ = [];
@@ -772,11 +772,11 @@ __vue_render__._withStripped = true;
   /* style */
   const __vue_inject_styles__ = function (inject) {
     if (!inject) return
-    inject("data-v-1fb63c91_0", { source: ".pin[data-v-1fb63c91] {\n  position: absolute;\n  display: inline;\n  width: 20px;\n  height: 20px;\n  background: #8db3d3;\n  border-radius: 50%;\n  transform: translate(-50%, -50%);\n}\n\n/*# sourceMappingURL=Pin.vue.map */", map: {"version":3,"sources":["/home/DN220789NKS1/www/connection-reroute-plugin/src/Pin.vue","Pin.vue"],"names":[],"mappings":"AA+DA;EACA,kBAAA;EACA,eAAA;EACA,WALA;EAMA,YANA;EAOA,mBAAA;EACA,kBAAA;EACA,gCAAA;AAAA;;AC7DA,kCAAkC","file":"Pin.vue","sourcesContent":["<template lang=\"pug\">\n.pin(\n  :style=\"{left: pin.x+'px', top: pin.y+'px'}\"\n  @pointerdown=\"down\"\n  @pointerup=\"pinup\"\n)\n</template>\n\n\n<script>\nconst State = { PICKED: 0, MOVED: 1, DROPED: 2}\n\nexport default {\n  props: ['pin', 'change', 'remove'],\n  inject: ['editor', 'connection'],\n  data() {\n    return {\n      state: State.DROPED\n    }\n  },\n  mounted() {\n    window.addEventListener('pointermove', this.move);\n    window.addEventListener('pointerup', this.up);\n  },\n  destroyed() {\n    window.removeEventListener('pointermove', this.move);\n    window.removeEventListener('pointerup', this.up);\n  },\n  methods: {\n    setPosition(x, y) {\n      this.$emit('change', {x, y});\n      this.$forceUpdate();\n    },\n    down(e){\n      e.stopPropagation();\n      this.state = State.PICKED;\n    },\n    move(e){\n      if(this.state === State.DROPED) return;\n\n      this.state = State.MOVED;\n      e.preventDefault();\n\n      const { mouse } = this.editor.view.area;\n\n      this.setPosition(mouse.x, mouse.y);\n    },\n    up(e) {\n      this.state = State.DROPED;\n    },\n    pinup() {\n      if(this.state === State.MOVED) return;\n\n      this.$emit('remove', this.pin);\n    }\n  }\n}\n</script>\n\n\n<style lang=\"sass\" scoped>\n$size: 20px\n\n.pin\n  position: absolute\n  display: inline\n  width: $size\n  height: $size\n  background: lighten(steelblue, 20%)\n  border-radius: 50%\n  transform: translate(-50%, -50%)\n</style>\n",".pin {\n  position: absolute;\n  display: inline;\n  width: 20px;\n  height: 20px;\n  background: #8db3d3;\n  border-radius: 50%;\n  transform: translate(-50%, -50%); }\n\n/*# sourceMappingURL=Pin.vue.map */"]}, media: undefined });
+    inject("data-v-41f117d7_0", { source: ".pin[data-v-41f117d7] {\n  position: absolute;\n  display: inline;\n  width: 20px;\n  height: 20px;\n  background: #8db3d3;\n  border-radius: 50%;\n  transform: translate(-50%, -50%);\n}\n\n/*# sourceMappingURL=Pin.vue.map */", map: {"version":3,"sources":["/home/DN220789NKS1/www/connection-reroute-plugin/src/Pin.vue","Pin.vue"],"names":[],"mappings":"AA+DA;EACA,kBAAA;EACA,eAAA;EACA,WALA;EAMA,YANA;EAOA,mBAAA;EACA,kBAAA;EACA,gCAAA;AAAA;;AC7DA,kCAAkC","file":"Pin.vue","sourcesContent":["<template lang=\"pug\">\n.pin(\n  :style=\"{left: pin.x+'px', top: pin.y+'px'}\"\n  @pointerdown=\"down\"\n  @dblclick=\"pinup\"\n)\n</template>\n\n\n<script>\nconst State = { PICKED: 0, MOVED: 1, DROPED: 2}\n\nexport default {\n  props: ['pin', 'change', 'remove'],\n  inject: ['editor', 'connection'],\n  data() {\n    return {\n      state: State.DROPED\n    }\n  },\n  mounted() {\n    window.addEventListener('pointermove', this.move);\n    window.addEventListener('pointerup', this.up);\n  },\n  destroyed() {\n    window.removeEventListener('pointermove', this.move);\n    window.removeEventListener('pointerup', this.up);\n  },\n  methods: {\n    setPosition(x, y) {\n      this.$emit('change', {x, y});\n      this.$forceUpdate();\n    },\n    down(e){\n      e.stopPropagation();\n      this.state = State.PICKED;\n    },\n    move(e){\n      if(this.state === State.DROPED) return;\n\n      this.state = State.MOVED;\n      e.preventDefault();\n\n      const { mouse } = this.editor.view.area;\n\n      this.setPosition(mouse.x, mouse.y);\n    },\n    up(e) {\n      this.state = State.DROPED;\n    },\n    pinup() {\n      if(this.state === State.MOVED) return;\n\n      this.$emit('remove', this.pin);\n    }\n  }\n}\n</script>\n\n\n<style lang=\"sass\" scoped>\n$size: 20px\n\n.pin\n  position: absolute\n  display: inline\n  width: $size\n  height: $size\n  background: lighten(steelblue, 20%)\n  border-radius: 50%\n  transform: translate(-50%, -50%)\n</style>\n",".pin {\n  position: absolute;\n  display: inline;\n  width: 20px;\n  height: 20px;\n  background: #8db3d3;\n  border-radius: 50%;\n  transform: translate(-50%, -50%); }\n\n/*# sourceMappingURL=Pin.vue.map */"]}, media: undefined });
 
   };
   /* scoped */
-  const __vue_scope_id__ = "data-v-1fb63c91";
+  const __vue_scope_id__ = "data-v-41f117d7";
   /* module identifier */
   const __vue_module_identifier__ = undefined;
   /* functional template */
@@ -1021,6 +1021,7 @@ function install(editor, _ref) {
       }
 
       el.classList.add("select-connection");
+      editor.last_active_connect = el;
       last_active = el;
     });
 

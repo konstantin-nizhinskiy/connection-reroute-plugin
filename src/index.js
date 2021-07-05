@@ -18,6 +18,7 @@ function install(editor, { curve = d3.curveCatmullRom.alpha(1), curvature = 0.05
             (transformedPoints)
     });
     var  last_active=false
+
     editor.on('renderconnection', ({ el, connection }) => {
         const path = el.querySelector('.connection path');
         const pins = connection.data.pins || (connection.data.pins = []);
@@ -34,6 +35,7 @@ function install(editor, { curve = d3.curveCatmullRom.alpha(1), curvature = 0.05
                 last_active.classList.remove("select-connection")
             }
             el.classList.add("select-connection")
+            editor.last_active_connect=el;
             last_active=el
         })
         connection.addPink=()=>{

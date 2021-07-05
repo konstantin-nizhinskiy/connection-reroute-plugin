@@ -2,7 +2,7 @@
 .pin(
   :style="{left: pin.x+'px', top: pin.y+'px'}"
   @pointerdown="down"
-  @pointerup="pinup"
+  @dblclick="pinup"
 )
 </template>
 
