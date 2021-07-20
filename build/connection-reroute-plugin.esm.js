@@ -974,12 +974,35 @@ function alignEndsHorizontally(points, curvature) {
   points.splice(points.length - 1, 0, [hx2, p4[1]]);
   return points;
 }
+function getAngle(_ref, _ref2) {
+  var x1 = _ref.x,
+      y1 = _ref.y;
+  var x2 = _ref2.x,
+      y2 = _ref2.y;
+  var dx = x1 - x2;
+  var dy = y1 - y2;
+  return 180 * Math.atan2(dy, dx) / Math.PI;
+}
+function getTransformAlong(path, offset) {
+  var delta = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+  var needRotate = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+  var length = path.getTotalLength() * delta;
+  var p1 = path.getPointAtLength(length + offset);
+  var p2 = path.getPointAtLength(length);
+  var angle = 180 + (needRotate ? getAngle(p1, p2) : 0);
+  return "translate(".concat(p1.x, ", ").concat(p1.y, ") rotate(").concat(angle, ")");
+}
 
 function install(editor, _ref) {
   var _ref$curve = _ref.curve,
       curve = _ref$curve === void 0 ? catmullRom.alpha(1) : _ref$curve,
       _ref$curvature = _ref.curvature,
-      curvature = _ref$curvature === void 0 ? 0.05 : _ref$curvature;
+      curvature = _ref$curvature === void 0 ? 0.05 : _ref$curvature,
+      _ref$arrow = _ref.arrow,
+      arrow = _ref$arrow === void 0 ? {
+    color: "steelblue",
+    marker: "M-5,-10 L-5,10 L20,0 z"
+  } : _ref$arrow;
   editor.on('connectionpath', function (data) {
     var connection = data.connection;
 
@@ -1090,6 +1113,25 @@ function install(editor, _ref) {
       }
     }).$mount(vueContainer);
   });
+
+  if (arrow) {
+    editor.on('renderconnection', function (_ref4) {
+      var el = _ref4.el;
+      var path = el.querySelector('path');
+      var marker = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      el.querySelector('svg').appendChild(marker);
+      marker.classList.add('marker');
+      marker.setAttribute('fill', arrow.color || 'steelblue');
+      marker.setAttribute('d', arrow.marker || 'M-5,-10 L-5,10 L20,0 z');
+      marker.setAttribute('transform', getTransformAlong(path, -25));
+    });
+    editor.on('updateconnection', function (_ref5) {
+      var el = _ref5.el;
+      var path = el.querySelector('path');
+      var marker = el.querySelector('.marker');
+      marker.setAttribute('transform', getTransformAlong(path, -25));
+    });
+  }
 }
 
 var index = {

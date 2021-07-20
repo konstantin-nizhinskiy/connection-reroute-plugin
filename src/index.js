@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import * as d3 from 'd3-shape';
 import Pins from './Pins.vue';
-import { findRightIndex, alignEndsHorizontally } from './utils';
+import { findRightIndex, alignEndsHorizontally,getTransformAlong } from './utils';
 
-function install(editor, { curve = d3.curveCatmullRom.alpha(1), curvature = 0.05 }) {
+function install(editor, { curve = d3.curveCatmullRom.alpha(1), curvature = 0.05,arrow={color:"steelblue",marker:"M-5,-10 L-5,10 L20,0 z"} }) {
     editor.on('connectionpath', data => {
         const { connection } = data;
         const [x1, y1, x2, y2] = data.points;
@@ -74,7 +74,29 @@ function install(editor, { curve = d3.curveCatmullRom.alpha(1), curvature = 0.05
             },
             render: h => h(Pins, { props: { pins } })
         }).$mount(vueContainer)
+
+
     })
+    if (arrow) {
+        editor.on('renderconnection', ({ el }) => {
+            const path = el.querySelector('path');
+            const marker = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+
+            el.querySelector('svg').appendChild(marker);
+            marker.classList.add('marker');
+            marker.setAttribute('fill', arrow.color || 'steelblue');
+            marker.setAttribute('d', arrow.marker || 'M-5,-10 L-5,10 L20,0 z');
+
+            marker.setAttribute('transform', getTransformAlong(path, -25));
+        });
+
+        editor.on('updateconnection', ({ el }) => {
+            const path = el.querySelector('path');
+            const marker = el.querySelector('.marker');
+
+            marker.setAttribute('transform', getTransformAlong(path, -25));
+        });
+    }
 }
 
 export default {
