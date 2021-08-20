@@ -1141,6 +1141,12 @@ function install(editor, _ref) {
       var path = el.querySelector('path');
       var marker = el.querySelector('.marker');
 
+      if (connection.data.color) {
+        path.style.setProperty("stroke", connection.data.color);
+      } else {
+        path.style.setProperty("stroke", "steelblue");
+      }
+
       if (connection.data.state_color) {
         path.style.setProperty("stroke", connection.data.state_color);
         el.classList.add("select-connection-step");
