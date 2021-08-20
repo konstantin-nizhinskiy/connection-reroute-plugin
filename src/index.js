@@ -90,10 +90,12 @@ function install(editor, { curve = d3.curveCatmullRom.alpha(1), curvature = 0.05
             marker.setAttribute('transform', getTransformAlong(path, -25));
         });
 
-        editor.on('updateconnection', ({ el }) => {
+        editor.on('updateconnection', ({ el,connection }) => {
             const path = el.querySelector('path');
             const marker = el.querySelector('.marker');
-
+            if(connection.data.color) {
+                path.style.setProperty("stroke", connection.data.color)
+            }
             marker.setAttribute('transform', getTransformAlong(path, -25));
         });
     }

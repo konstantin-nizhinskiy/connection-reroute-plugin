@@ -1132,9 +1132,15 @@ function install(editor, _ref) {
       marker.setAttribute('transform', getTransformAlong(path, -25));
     });
     editor.on('updateconnection', function (_ref5) {
-      var el = _ref5.el;
+      var el = _ref5.el,
+          connection = _ref5.connection;
       var path = el.querySelector('path');
       var marker = el.querySelector('.marker');
+
+      if (connection.data.color) {
+        path.style.setProperty("stroke", connection.data.color);
+      }
+
       marker.setAttribute('transform', getTransformAlong(path, -25));
     });
   }
