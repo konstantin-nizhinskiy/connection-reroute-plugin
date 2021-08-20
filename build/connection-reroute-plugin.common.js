@@ -1143,6 +1143,9 @@ function install(editor, _ref) {
 
       if (connection.data.state_color) {
         path.style.setProperty("stroke", connection.data.state_color);
+        el.classList.add("select-connection-step");
+      } else {
+        el.classList.remove("select-connection-step");
       }
 
       marker.setAttribute('transform', getTransformAlong(path, -25));
