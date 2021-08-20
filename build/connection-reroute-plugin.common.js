@@ -1044,6 +1044,10 @@ function install(editor, _ref) {
       path.style.setProperty("stroke", connection.data.color);
     }
 
+    if (connection.data.state_color) {
+      path.style.setProperty("stroke", connection.data.state_color);
+    }
+
     path.addEventListener('click', function () {
       if (last_active) {
         last_active.classList.remove("select-connection");
@@ -1137,8 +1141,8 @@ function install(editor, _ref) {
       var path = el.querySelector('path');
       var marker = el.querySelector('.marker');
 
-      if (connection.data.color) {
-        path.style.setProperty("stroke", connection.data.color);
+      if (connection.data.state_color) {
+        path.style.setProperty("stroke", connection.data.state_color);
       }
 
       marker.setAttribute('transform', getTransformAlong(path, -25));

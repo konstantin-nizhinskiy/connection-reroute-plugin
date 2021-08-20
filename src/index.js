@@ -29,6 +29,9 @@ function install(editor, { curve = d3.curveCatmullRom.alpha(1), curvature = 0.05
         if(connection.data.color){
             path.style.setProperty("stroke", connection.data.color)
         }
+        if(connection.data.state_color) {
+            path.style.setProperty("stroke", connection.data.state_color)
+        }
 
         path.addEventListener('click', function () {
             if(last_active){
@@ -93,8 +96,8 @@ function install(editor, { curve = d3.curveCatmullRom.alpha(1), curvature = 0.05
         editor.on('updateconnection', ({ el,connection }) => {
             const path = el.querySelector('path');
             const marker = el.querySelector('.marker');
-            if(connection.data.color) {
-                path.style.setProperty("stroke", connection.data.color)
+            if(connection.data.state_color) {
+                path.style.setProperty("stroke", connection.data.state_color)
             }
             marker.setAttribute('transform', getTransformAlong(path, -25));
         });
